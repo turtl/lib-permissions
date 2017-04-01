@@ -1,0 +1,48 @@
+---
+roles:
+  - 'owner'
+  - 'admin'
+  - 'moderator'
+  - 'member'
+  - 'guest'
+
+permissions:
+  - 'edit-space'
+  - 'delete-space'
+  - 'set-space-owner'
+  - 'add-space-invite'
+  - 'edit-space-invite'
+  - 'delete-space-invite'
+
+  - 'add-board'
+  - 'edit-board'
+  - 'delete-board'
+
+  - 'add-note'
+  - 'edit-note'
+  - 'delete-note'
+
+role_permissions:
+  owner:
+    copy: 'admin'
+    perms:
+      - 'set-space-owner'
+      - 'delete-space'
+  admin:
+    all_but:
+      - 'set-space-owner'
+      - 'delete-space'
+  moderator:
+    perms:
+      - 'add-board'
+      - 'edit-board'
+      - 'delete-board'
+      - 'add-note'
+      - 'edit-note'
+      - 'delete-note'
+  member:
+    perms:
+      - 'add-note'
+      - 'edit-note'
+      - 'delete-note'
+

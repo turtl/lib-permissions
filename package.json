@@ -1,0 +1,12 @@
+{
+  "name": "turtl-lib-permissions",
+  "version": "0.1.0",
+  "description": "An abstracted library that holds Turtl's sharing permissions and houses the logic to apply them to various roles.",
+  "author": "Andrew Lyon",
+  "license": "GPL-3.0",
+  "repository": "https://github.com/turtl/lib-permissions",
+  "main": "javascript.js",
+  "dependencies": {
+    "js-yaml": "3.7.0"
+  }
+}
