@@ -54,5 +54,3 @@ exports.roles = roles;
 exports.permissions = permissions;
 exports.role_permissions = role_permissions;
 
-console.log('perms: ', JSON.stringify({roles: roles, perms: permissions, rp: role_permissions}, null, 2));
-

@@ -45,4 +45,6 @@ role_permissions:
       - 'add-note'
       - 'edit-note'
       - 'delete-note'
+  guest:
+    perms: []
 
