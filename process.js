@@ -1,6 +1,10 @@
 (function() {
-
 "use strict";
+
+var roles = null;
+var permissions = null;
+var role_permissions = null;
+
 var process = function(permdata) {
 	function to_kv(arr) {
 		var obj = {};
@@ -11,10 +15,10 @@ var process = function(permdata) {
 		return obj;
 	};
 
-	var roles = to_kv(permdata.roles);
-	var permissions = to_kv(permdata.permissions);
+	roles = to_kv(permdata.roles);
+	permissions = to_kv(permdata.permissions);
+	role_permissions = {};
 
-	var role_permissions = {};
 	var copy = {};
 	Object.keys(permdata.role_permissions).forEach(function(role) {
 		var spec = permdata.role_permissions[role];
@@ -53,7 +57,19 @@ var process = function(permdata) {
 		role_permissions: role_permissions,
 	};
 };
-this.Permissions = {process: process};
+
+var can = function(role, permission) {
+	var role_perms = role_permissions[role];
+	if(permissions && permissions.indexOf(permission) >= 0) {
+		return true;
+	}
+	return false;
+};
+
+this.Permissions = {
+	process: process,
+	can: can
+};
 
 }).call(typeof(exports) === 'undefined' ? window : exports);
 
