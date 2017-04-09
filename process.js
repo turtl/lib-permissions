@@ -55,5 +55,5 @@ var process = function(permdata) {
 };
 this.Permissions = {process: process};
 
-}).call(exports ? exports : window);
+}).call(typeof(exports) === 'undefined' ? window : exports);
 
