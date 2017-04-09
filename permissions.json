@@ -10,6 +10,8 @@
 		"edit-space",
 		"delete-space",
 		"set-space-owner",
+		"edit-space-member",
+		"delete-space-member",
 		"add-space-invite",
 		"edit-space-invite",
 		"delete-space-invite",
