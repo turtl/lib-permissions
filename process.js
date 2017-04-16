@@ -11,8 +11,13 @@ var process = function(permdata) {
 		return obj;
 	};
 
-	var roles = to_kv(permdata.roles);
+	var roles = to_kv(Object.keys(permdata.roles));
 	var permissions = to_kv(permdata.permissions);
+	var desc = {};
+
+	Object.keys(roles).forEach(function(k) {
+		desc[k] = permdata.roles[k].desc;
+	});
 
 	var role_permissions = {};
 	var copy = {};
@@ -51,6 +56,7 @@ var process = function(permdata) {
 		roles: roles,
 		permissions: permissions,
 		role_permissions: role_permissions,
+		desc: desc,
 	};
 };
 this.Permissions = {process: process};
