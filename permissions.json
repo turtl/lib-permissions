@@ -1,19 +1,19 @@
 {
 	"roles": {
 		"owner": {
-			"desc": "Can do anything."
+			"desc": "Can do anything"
 		},
 		"admin": {
-			"desc": "Can invite and moderate users, edit boards and notes."
+			"desc": "Can invite and moderate users, edit boards and notes"
 		},
 		"moderator": {
-			"desc": "Can edit boards and notes."
+			"desc": "Can edit boards and notes"
 		},
 		"member": {
-			"desc": "Can edit notes."
+			"desc": "Can edit notes"
 		},
 		"guest": {
-			"desc": "Read-only."
+			"desc": "Read-only"
 		}
 	},
 	"permissions": [
