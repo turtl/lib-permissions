@@ -14,3 +14,4 @@ mod tests {
         Role::all_roles();
     }
 }
+
