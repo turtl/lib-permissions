@@ -8,7 +8,7 @@ use std::env;
 use std::fs::File;
 use std::io::Write;
 use std::path::PathBuf;
-use std::collections::HashMap;
+use std::collections::{HashMap, BTreeMap};
 use regex::{Regex, Captures};
 
 #[derive(Deserialize, Debug)]
@@ -19,7 +19,7 @@ struct RolePermissions {
 }
 #[derive(Deserialize, Debug)]
 struct Permissions {
-    roles: HashMap<String, HashMap<String, String>>,
+    roles: BTreeMap<String, HashMap<String, String>>,
     permissions: Vec<String>,
     role_permissions: HashMap<String, RolePermissions>,
 }
@@ -59,20 +59,6 @@ fn main() {
     // implement our stupid role.
     output.push_str("impl Role {\n");
 
-    // create a desc() function that returns this role's description text
-    output.push_str("    pub fn desc(&self) -> &'static str {\n");
-    output.push_str("        match self {\n");
-    for kv in &permissions.roles {
-        let camel = re_camel_case.replace_all(kv.0, |caps: &Captures| {
-            format!("{}", &caps[2]).to_uppercase()
-        });
-        let desc = kv.1.get(&String::from("desc")).unwrap();
-        output.push_str(format!("            &Role::{} => \"{}\",\n", camel, desc).as_str());
-    }
-    output.push_str("        }\n");
-    output.push_str("    }\n");
-    output.push_str("\n");
-
     // a function that returns a list of each role along with its stupid
     // description. useful for sending a list of roles to, oh, i don't know,
     // the UI???
@@ -87,6 +73,20 @@ fn main() {
         output.push_str("        roles.push((role, desc));\n");
     }
     output.push_str("        roles\n");
+    output.push_str("    }\n");
+    output.push_str("\n");
+
+    // create a desc() function that returns this role's description text
+    output.push_str("    pub fn desc(&self) -> &'static str {\n");
+    output.push_str("        match self {\n");
+    for kv in &permissions.roles {
+        let camel = re_camel_case.replace_all(kv.0, |caps: &Captures| {
+            format!("{}", &caps[2]).to_uppercase()
+        });
+        let desc = kv.1.get(&String::from("desc")).unwrap();
+        output.push_str(format!("            &Role::{} => \"{}\",\n", camel, desc).as_str());
+    }
+    output.push_str("        }\n");
     output.push_str("    }\n");
     output.push_str("\n");
 
@@ -156,19 +156,45 @@ fn main() {
     }
     output.push_str("        }\n");
     output.push_str("    }\n");
+    output.push_str("\n");
+
+    // build a function that, given a role, returns a vec of actions
+    // (permissions) that role can perform
+    output.push_str("    pub fn allowed_permissions(&self) -> Vec<Permission> {\n");
+    output.push_str("        match *self {\n");
+    for role in &permissions.roles {
+        let camel = re_camel_case.replace_all(role.0, |caps: &Captures| {
+            format!("{}", &caps[2]).to_uppercase()
+        });
+        output.push_str(format!("            Role::{} => {{\n", camel).as_str());
+        output.push_str(format!("                vec![\n").as_str());
+        let rp = role_permissions.get(role.0).unwrap();
+        for perm in &permissions.permissions {
+            if !rp.contains(perm) { continue; }
+            let camel = re_camel_case.replace_all(perm, |caps: &Captures| {
+                format!("{}", &caps[2]).to_uppercase()
+            });
+            output.push_str(format!("                    Permission::{},\n", camel).as_str());
+        }
+        output.push_str(format!("                ]\n").as_str());
+        output.push_str(format!("            }}\n").as_str());
+    }
+    output.push_str("        }\n");
+    output.push_str("    }\n");
+
     output.push_str("}\n");
 
     output.push_str("\n");
 
     // now create an enum with all our permissions
+    output.push_str("#[derive(Serialize, Deserialize, Debug)]\n");
     output.push_str("pub enum Permission {\n");
     for perm in &permissions.permissions {
         let rep = re_camel_case.replace_all(perm.as_str(), |caps: &Captures| {
             format!("{}", &caps[2]).to_uppercase()
         });
-        output.push_str("    ");
-        output.push_str(rep.as_str());
-        output.push_str(",\n");
+        output.push_str(format!("    #[serde(rename = \"{}\")]\n", perm).as_str());
+        output.push_str(format!("    {},\n", rep).as_str());
     }
     output.push_str("}\n");
 
