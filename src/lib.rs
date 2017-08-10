@@ -2,7 +2,7 @@ extern crate serde;
 #[macro_use]
 extern crate serde_derive;
 
-pub mod gen;
+mod gen;
 pub use gen::*;
 
 #[cfg(test)]
