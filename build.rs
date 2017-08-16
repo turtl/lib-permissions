@@ -56,6 +56,12 @@ fn main() {
 
     output.push_str("\n");
 
+    // our guest has to be getting along, mrs. lebowski
+    output.push_str("impl Default for Role {\n");
+    output.push_str("    fn default() -> Self { Role::Guest }\n");
+    output.push_str("}\n");
+    output.push_str("\n");
+
     // implement our stupid role.
     output.push_str("impl Role {\n");
 
