@@ -1,6 +1,6 @@
 {
   "name": "turtl-lib-permissions",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "description": "An abstracted library that holds Turtl's sharing permissions and houses the logic to apply them to various roles.",
   "author": "Andrew Lyon",
   "license": "GPL-3.0",

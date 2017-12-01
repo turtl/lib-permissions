@@ -1,6 +1,6 @@
 [package]
 name = "lib_permissions"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Andrew Danger Lyon <orthecreedence@gmail.com>"]
 license = "GPL-3.0"
 build = "build.rs"
