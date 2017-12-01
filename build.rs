@@ -41,7 +41,7 @@ fn main() {
     output.push_str("\n");
 
     // create a Role enum with all our roles
-    output.push_str("#[derive(Serialize, Deserialize, Debug)]\n");
+    output.push_str("#[derive(Serialize, Deserialize, Debug, PartialEq)]\n");
     output.push_str("pub enum Role {\n");
     for kv in &permissions.roles {
         let camel = re_camel_case.replace_all(kv.0, |caps: &Captures| {
@@ -193,7 +193,7 @@ fn main() {
     output.push_str("\n");
 
     // now create an enum with all our permissions
-    output.push_str("#[derive(Serialize, Deserialize, Debug)]\n");
+    output.push_str("#[derive(Serialize, Deserialize, Debug, PartialEq)]\n");
     output.push_str("pub enum Permission {\n");
     for perm in &permissions.permissions {
         let rep = re_camel_case.replace_all(perm.as_str(), |caps: &Captures| {
